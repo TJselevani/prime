@@ -21,17 +21,23 @@ import { AllVehiclesComponent } from './pages/vehicles/all/all';
 import { ActiveVehiclesComponent } from './pages/vehicles/active/active';
 import { InactiveVehiclesComponent } from './pages/vehicles/inactive/inactive';
 import { MaintenanceVehiclesComponent } from './pages/vehicles/maintenance/maintenance';
+import { DriversComponent } from './pages/users/drivers/drivers';
+import { CustomersComponent } from './pages/users/customers/customers';
+import { AdminUserComponent } from './pages/users/admin/admin';
+import { LocationsComponent } from './pages/locations/locations';
 
 export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
     children: [
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard/home', component: DashboardComponent },
       { path: 'dashboard/stats', component: StatsComponent },
       { path: 'dashboard/reports', component: ReportsComponent },
 
-      { path: 'vehicles', component: AllVehiclesComponent },
+      { path: 'locations', component: LocationsComponent },
+
+      { path: 'vehicles/all', component: AllVehiclesComponent },
       { path: 'vehicles/active', component: ActiveVehiclesComponent },
       { path: 'vehicles/inactive', component: InactiveVehiclesComponent },
       { path: 'vehicles/maintenance', component: MaintenanceVehiclesComponent },
@@ -41,23 +47,26 @@ export const routes: Routes = [
       { path: 'vehicle-analysis/monthly', component: MonthlyAnalysisComponent },
       { path: 'vehicle-analysis/yearly', component: YearlyAnalysisComponent },
 
-      { path: 'prediction', component: ShortTermPredictionComponent },
       { path: 'prediction/short-term', component: ShortTermPredictionComponent },
       { path: 'prediction/long-term', component: LongTermPredictionComponent },
       { path: 'prediction/trends', component: PredictionTrendsComponent },
 
-      { path: 'revenue', component: RevenueComponent },
+      { path: 'revenue/all', component: RevenueComponent },
       { path: 'revenue/by-vehicle', component: RevenueByVehicleComponent },
       { path: 'revenue/by-location', component: RevenueByLocationComponent },
 
-      { path: 'transactions', component: TransactionsComponent },
+      { path: 'transactions/all', component: TransactionsComponent },
       { path: 'transactions/completed', component: CompletedTransactionsComponent },
       { path: 'transactions/failed', component: FailedTransactionsComponent },
       { path: 'transactions/pending', component: PendingTransactionsComponent },
 
-      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+      { path: 'users/all', component: AdminUserComponent },
+      { path: 'users/drivers', component: DriversComponent },
+      { path: 'users/customers', component: CustomersComponent },
+
+      { path: '', redirectTo: '/dashboard/home', pathMatch: 'full' },
     ],
   },
 
-  { path: '**', redirectTo: '/dashboard' },
+  { path: '**', redirectTo: '/dashboard/home' },
 ];

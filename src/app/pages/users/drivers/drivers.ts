@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './drivers.html',
   styleUrl: './drivers.css',
 })
-export class Drivers {
+export class DriversComponent {
 
 }

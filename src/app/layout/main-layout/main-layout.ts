@@ -40,7 +40,7 @@ export class MainLayoutComponent implements OnInit {
     {
       route: '/dashboard',
       tabs: [
-        { label: 'Overview', icon: 'pi pi-th-large', path: '/dashboard' },
+        { label: 'Overview', icon: 'pi pi-th-large', path: '/dashboard/home' },
         { label: 'Statistics', icon: 'pi pi-chart-pie', path: '/dashboard/stats' },
         { label: 'Reports', icon: 'pi pi-file', path: '/dashboard/reports' },
       ],
@@ -65,7 +65,7 @@ export class MainLayoutComponent implements OnInit {
     {
       route: '/transactions',
       tabs: [
-        { label: 'All Transactions', icon: 'pi pi-list', path: '/transactions' },
+        { label: 'All Transactions', icon: 'pi pi-list', path: '/transactions/all' },
         { label: 'Pending', icon: 'pi pi-clock', path: '/transactions/pending' },
         { label: 'Completed', icon: 'pi pi-check-circle', path: '/transactions/completed' },
         { label: 'Failed', icon: 'pi pi-times-circle', path: '/transactions/failed' },
@@ -74,7 +74,7 @@ export class MainLayoutComponent implements OnInit {
     {
       route: '/revenue',
       tabs: [
-        { label: 'Overview', icon: 'pi pi-dollar', path: '/revenue' },
+        { label: 'Overview', icon: 'pi pi-dollar', path: '/revenue/all' },
         { label: 'By Vehicle', icon: 'pi pi-car', path: '/revenue/by-vehicle' },
         { label: 'By Location', icon: 'pi pi-map-marker', path: '/revenue/by-location' },
       ],
@@ -82,11 +82,25 @@ export class MainLayoutComponent implements OnInit {
     {
       route: '/vehicles',
       tabs: [
-        { label: 'All Vehicles', icon: 'pi pi-car', path: '/vehicles' },
+        { label: 'All Vehicles', icon: 'pi pi-car', path: 'vehicles/all' },
         { label: 'Active', icon: 'pi pi-check', path: '/vehicles/active' },
         { label: 'Inactive', icon: 'pi pi-ban', path: '/vehicles/inactive' },
         { label: 'Maintenance', icon: 'pi pi-wrench', path: '/vehicles/maintenance' },
       ],
+    },
+
+    {
+      route: '/users',
+      tabs: [
+        { label: 'All Admins', icon: 'pi pi-avatar', path: '/users/all' },
+        { label: 'All Drivers', icon: 'pi pi-avatar', path: '/users/drivers' },
+        { label: 'All Customers', icon: 'pi pi-avatar', path: '/users/customers' },
+      ],
+    },
+
+    {
+      route: '/locations',
+      tabs: [{ label: 'Locations', icon: 'pi pi-location', path: '/locations' }],
     },
   ];
 
