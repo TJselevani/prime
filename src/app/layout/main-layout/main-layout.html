@@ -1,0 +1,202 @@
+<!-- layout/main-layout/main-layout.component.html -->
+<div class="layout-container">
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" [class.sidebar--collapsed]="sidebarCollapsed">
+    <!-- Logo Header -->
+    <div class="sidebar__header">
+      <div class="sidebar__logo">
+        <i class="pi pi-car"></i>
+        <span class="sidebar__logo-text">GOPAY</span>
+      </div>
+    </div>
+
+    <!-- Sidebar Body -->
+    <div class="sidebar__body">
+      <!-- User Profile Card -->
+      <div class="sidebar__profile">
+        <div class="sidebar__avatar">{{ userInfo.initials }}</div>
+        <div class="sidebar__user-info" *ngIf="!sidebarCollapsed">
+          <div class="sidebar__user-name">{{ userInfo.name }}</div>
+          <div class="sidebar__user-email">{{ userInfo.email }}</div>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="sidebar__nav">
+        <ul class="sidebar-menu">
+          <!-- Main Category -->
+          <li>
+            <div class="menu-category" *ngIf="!sidebarCollapsed">Main</div>
+            <ul class="menu-items">
+              <li class="menu-item">
+                <button
+                  class="menu-link"
+                  [class.menu-link--active]="isRouteActive('/dashboard')"
+                  (click)="navigate('/dashboard')"
+                >
+                  <span class="menu-link-content">
+                    <i class="pi pi-home menu-icon"></i>
+                    <span class="menu-text">Dashboard</span>
+                  </span>
+                </button>
+              </li>
+
+              <li class="menu-item">
+                <button
+                  class="menu-link"
+                  [class.menu-link--active]="isRouteActive('/transactions')"
+                  (click)="navigate('/transactions')"
+                >
+                  <span class="menu-link-content">
+                    <i class="pi pi-credit-card menu-icon"></i>
+                    <span class="menu-text">Transactions</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Analytics Category -->
+          <li>
+            <div class="menu-category" *ngIf="!sidebarCollapsed">Analytics</div>
+            <ul class="menu-items">
+              <li class="menu-item">
+                <button
+                  class="menu-link"
+                  [class.menu-link--active]="isRouteActive('/vehicle-analysis')"
+                  (click)="navigate('/vehicle-analysis/daily')"
+                >
+                  <span class="menu-link-content">
+                    <i class="pi pi-chart-line menu-icon"></i>
+                    <span class="menu-text">Vehicle Analysis</span>
+                  </span>
+                </button>
+              </li>
+
+              <li class="menu-item">
+                <button
+                  class="menu-link"
+                  [class.menu-link--active]="isRouteActive('/prediction')"
+                  (click)="navigate('/prediction/short-term')"
+                >
+                  <span class="menu-link-content">
+                    <i class="pi pi-chart-bar menu-icon"></i>
+                    <span class="menu-text">Income Prediction</span>
+                  </span>
+                </button>
+              </li>
+
+              <li class="menu-item">
+                <button
+                  class="menu-link"
+                  [class.menu-link--active]="isRouteActive('/revenue')"
+                  (click)="navigate('/revenue')"
+                >
+                  <span class="menu-link-content">
+                    <i class="pi pi-dollar menu-icon"></i>
+                    <span class="menu-text">Revenue Reports</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Management Category -->
+          <li>
+            <div class="menu-category" *ngIf="!sidebarCollapsed">Management</div>
+            <ul class="menu-items">
+              <li class="menu-item">
+                <button
+                  class="menu-link"
+                  [class.menu-link--active]="isRouteActive('/vehicles')"
+                  (click)="navigate('/vehicles')"
+                >
+                  <span class="menu-link-content">
+                    <i class="pi pi-car menu-icon"></i>
+                    <span class="menu-text">Vehicles</span>
+                  </span>
+                </button>
+              </li>
+
+              <li class="menu-item">
+                <button
+                  class="menu-link"
+                  [class.menu-link--active]="isRouteActive('/locations')"
+                  (click)="navigate('/locations')"
+                >
+                  <span class="menu-link-content">
+                    <i class="pi pi-map-marker menu-icon"></i>
+                    <span class="menu-text">Locations</span>
+                  </span>
+                </button>
+              </li>
+
+              <li class="menu-item">
+                <button
+                  class="menu-link"
+                  [class.menu-link--active]="isRouteActive('/users')"
+                  (click)="navigate('/users')"
+                >
+                  <span class="menu-link-content">
+                    <i class="pi pi-users menu-icon"></i>
+                    <span class="menu-text">Users</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar__footer">
+      <button class="sidebar__logout-btn" (click)="logout()">
+        <i class="pi pi-sign-out"></i>
+        <span *ngIf="!sidebarCollapsed">Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="main-content">
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+      <div class="topbar__left">
+        <button class="topbar__toggle" (click)="toggleSidebar()">
+          <i class="pi pi-bars"></i>
+        </button>
+      </div>
+
+      <div class="topbar__right">
+        <button class="topbar__icon-btn">
+          <i class="pi pi-bell"></i>
+          <span class="topbar__badge">3</span>
+        </button>
+        <button class="topbar__icon-btn">
+          <i class="pi pi-cog"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- ========== HORIZONTAL TAB NAVIGATION ========== -->
+    <nav class="tab-nav" *ngIf="showTabs">
+      <div class="tab-nav__group">
+        <button
+          *ngFor="let tab of currentTabs; let i = index"
+          class="tab-nav__item"
+          [class.tab-nav__item--active]="activeTabIndex === i"
+          (click)="onTabChange(i)"
+        >
+          <i [class]="tab.icon" class="tab-nav__icon"></i>
+          <span class="tab-nav__label">{{ tab.label }}</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Page Content Area -->
+    <section class="content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

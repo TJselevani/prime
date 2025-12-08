@@ -1,0 +1,150 @@
+<!-- pages/dashboard/dashboard.component.html -->
+<div class="dashboard-container">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>Dashboard Overview</h1>
+      <p class="text-muted">Welcome back! Here's what's happening with your fleet today.</p>
+    </div>
+    <div class="header-actions">
+      <!-- <p-calendar
+        [(ngModel)]="dateRange"
+        selectionMode="range"
+        [readonlyInput]="true"
+        dateFormat="dd/mm/yy"
+        placeholder="Select Date Range"
+        (onSelect)="onDateRangeChange()"
+        [showIcon]="true"
+      > -->
+      <!-- </p-calendar> -->
+      <mat-form-field appearance="fill">
+        <mat-label>Select Date Range</mat-label>
+        <mat-date-range-input [rangePicker]="picker" [separator]="' to '">
+          <input matStartDate placeholder="Start date" />
+          <input matEndDate placeholder="End date" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <button
+        pButton
+        label="Export"
+        icon="pi pi-download"
+        class="p-button-outlined p-button-primary"
+        (click)="exportData()"
+      ></button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <p-card *ngFor="let card of statsCards" [styleClass]="'stat-card'">
+      <div class="stat-content">
+        <div class="stat-info">
+          <span class="stat-title">{{ card.title }}</span>
+          <h2 class="stat-value">{{ card.value }}</h2>
+          <span class="stat-change positive" *ngIf="card.change">
+            <i class="pi pi-arrow-up"></i> {{ card.change }}
+          </span>
+        </div>
+        <div class="stat-icon" [style.background-color]="card.color + '20'">
+          <i [class]="'pi ' + card.icon" [style.color]="card.color"></i>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-grid">
+    <!-- Line Chart -->
+    <p-card header="Organizations Performance" styleClass="chart-card">
+      <div class="chart-container">
+        <p-chart type="line" [data]="chartData" [options]="chartOptions" height="300px"></p-chart>
+      </div>
+    </p-card>
+
+    <!-- Pie Chart -->
+    <p-card header="Total Amount Per Category" styleClass="chart-card">
+      <div class="chart-container">
+        <p-chart
+          type="pie"
+          [data]="pieChartData"
+          [options]="pieChartOptions"
+          height="300px"
+        ></p-chart>
+      </div>
+      <div class="category-legend">
+        <div class="legend-item">
+          <span class="legend-dot" style="background: #0d6efd"></span>
+          <span class="legend-label">SYSTEM</span>
+          <span class="legend-value">Ksh 306,994.00</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot" style="background: #dc3545"></span>
+          <span class="legend-label">DRIVER</span>
+          <span class="legend-value">Ksh 6,183,923.00</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot" style="background: #ffc107"></span>
+          <span class="legend-label">FUEL</span>
+          <span class="legend-value">Ksh 150,000.00</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot" style="background: #198754"></span>
+          <span class="legend-label">MAINTENANCE</span>
+          <span class="legend-value">Ksh 350,000.00</span>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Recent Transactions -->
+  <p-card header="Recent Transactions" styleClass="transactions-card">
+    <p-table [value]="recentTransactions" [rows]="5" [paginator]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Transaction ID</th>
+          <th>Date</th>
+          <th>Vehicle</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-transaction>
+        <tr>
+          <td>{{ transaction.id }}</td>
+          <td>{{ transaction.date }}</td>
+          <td>
+            <span class="vehicle-badge">
+              <i class="pi pi-car"></i>
+              {{ transaction.vehicle }}
+            </span>
+          </td>
+          <td class="amount-cell">Ksh {{ transaction.amount | number : '1.2-2' }}</td>
+          <td>
+            <span [class]="'type-badge type-' + transaction.type.toLowerCase()">
+              {{ transaction.type }}
+            </span>
+          </td>
+          <td>
+            <span [class]="'status-badge status-' + transaction.status.toLowerCase()">
+              {{ transaction.status }}
+            </span>
+          </td>
+          <td>
+            <button
+              pButton
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-text p-button-sm"
+              pTooltip="View Details"
+              tooltipPosition="top"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
