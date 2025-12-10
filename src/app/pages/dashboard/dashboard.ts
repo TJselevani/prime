@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
+import { A11yModule } from "@angular/cdk/a11y";
 
 interface StatsCard {
   title: string;
@@ -34,7 +35,8 @@ interface StatsCard {
     ButtonModule,
     TableModule,
     TooltipModule,
-  ],
+    A11yModule
+],
   standalone: true,
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',

@@ -45,6 +45,25 @@ export class MainLayoutComponent implements OnInit {
         { label: 'Reports', icon: 'pi pi-file', path: '/dashboard/reports' },
       ],
     },
+
+    {
+      route: '/transactions',
+      tabs: [
+        { label: 'All Transactions', icon: 'pi pi-list', path: '/transactions/all' },
+        { label: 'Pending', icon: 'pi pi-clock', path: '/transactions/pending' },
+        { label: 'Completed', icon: 'pi pi-check-circle', path: '/transactions/completed' },
+        { label: 'Failed', icon: 'pi pi-times-circle', path: '/transactions/failed' },
+      ],
+    },
+
+    {
+      route: '/transfer-payment',
+      tabs: [
+        { label: 'Credit Driver', icon: 'pi pi-list', path: '/transfer-payment/1' },
+        { label: 'Funds Re-assignment', icon: 'pi pi-clock', path: '/transfer-payment/2' },
+      ],
+    },
+
     {
       route: '/vehicle-analysis',
       tabs: [
@@ -62,15 +81,7 @@ export class MainLayoutComponent implements OnInit {
         { label: 'Trends', icon: 'pi pi-chart-bar', path: '/prediction/trends' },
       ],
     },
-    {
-      route: '/transactions',
-      tabs: [
-        { label: 'All Transactions', icon: 'pi pi-list', path: '/transactions/all' },
-        { label: 'Pending', icon: 'pi pi-clock', path: '/transactions/pending' },
-        { label: 'Completed', icon: 'pi pi-check-circle', path: '/transactions/completed' },
-        { label: 'Failed', icon: 'pi pi-times-circle', path: '/transactions/failed' },
-      ],
-    },
+
     {
       route: '/revenue',
       tabs: [
@@ -92,9 +103,13 @@ export class MainLayoutComponent implements OnInit {
     {
       route: '/users',
       tabs: [
-        { label: 'All Admins', icon: 'pi pi-avatar', path: '/users/all' },
+        { label: 'All Users', icon: 'pi pi-avatar', path: '/users/all' },
+        { label: 'All Admins', icon: 'pi pi-avatar', path: '/users/admins' },
+        { label: 'All Marshalls', icon: 'pi pi-avatar', path: '/users/marshals' },
         { label: 'All Drivers', icon: 'pi pi-avatar', path: '/users/drivers' },
-        { label: 'All Customers', icon: 'pi pi-avatar', path: '/users/customers' },
+        { label: 'All Conductors', icon: 'pi pi-avatar', path: '/users/conductors' },
+        { label: 'All Passengers', icon: 'pi pi-avatar', path: '/users/customers' },
+        { label: 'Deactivated Users', icon: 'pi pi-avatar', path: '/users/inactive' },
       ],
     },
 
