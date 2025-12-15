@@ -7,12 +7,25 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
-import { A11yModule } from "@angular/cdk/a11y";
+import { A11yModule } from '@angular/cdk/a11y';
+import { DataService } from '../../../@core/api/data.service';
+import { API_ENDPOINTS } from '../../../@core/api/endpoints';
+import { DashboardData, DashboardTransaction } from '../../../@fake-db/dashboard/dashboard.model';
+import {
+  buildLineChart,
+  buildLineChartOptions,
+  buildPieChart,
+  buildPieChartOptions,
+  mapStatsToCards,
+} from '../../../@core/mappers/dashboard.mapper';
+import { LoadingStore } from '../../../@core/state/loading.store';
+import { ChangeDetectorRef } from '@angular/core';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 interface StatsCard {
   title: string;
@@ -28,6 +41,8 @@ interface StatsCard {
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule,
+    ProgressSpinnerModule,
     CommonModule,
     FormsModule,
     CardModule,
@@ -35,8 +50,8 @@ interface StatsCard {
     ButtonModule,
     TableModule,
     TooltipModule,
-    A11yModule
-],
+    A11yModule,
+  ],
   standalone: true,
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
@@ -49,141 +64,35 @@ export class DashboardComponent implements OnInit {
   pieChartData: any;
   pieChartOptions: any;
   dateRange: Date[] = [];
-  recentTransactions: any[] = [];
+  recentTransactions: DashboardTransaction[] = [];
+  loading: any;
 
-  ngOnInit() {
-    this.initializeStatsCards();
-    this.initializeCharts();
-    this.initializeTransactions();
+  constructor(
+    private dataService: DataService,
+    private loadingStore: LoadingStore,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.loading = this.loadingStore.loading;
+  }
+
+  ngOnInit(): void {
     this.setDateRange();
-  }
+    this.loadingStore.start();
 
-  initializeStatsCards() {
-    this.statsCards = [
-      {
-        title: 'Total Amount Collected',
-        value: 'Ksh 6,999,837.00',
-        icon: 'pi-dollar',
-        color: '#dc3545',
-        change: '+12.5%',
+    this.dataService.get<DashboardData>(API_ENDPOINTS.DASHBOARD).subscribe({
+      next: (data) => {
+        this.chartData = buildLineChart(data.lineChart);
+        this.chartOptions = buildLineChartOptions();
+        this.pieChartData = buildPieChart(data.pieChart);
+        this.pieChartOptions = buildPieChartOptions();
+        this.statsCards = mapStatsToCards(data.stats);
+        this.recentTransactions = data.recentTransactions;
+        this.cdr.detectChanges();
       },
-      {
-        title: 'Total Booking Amount',
-        value: 'Ksh 14,565.00',
-        icon: 'pi-calendar',
-        color: '#0d6efd',
-        change: '+8.2%',
+      complete: () => {
+        this.loadingStore.stop();
       },
-      {
-        title: 'Total Direct Payment',
-        value: 'Ksh 6,985,272.00',
-        icon: 'pi-credit-card',
-        color: '#198754',
-        change: '+15.3%',
-      },
-      {
-        title: 'Total Transactions',
-        value: '42,063',
-        icon: 'pi-chart-line',
-        color: '#ffc107',
-        change: '+23.1%',
-      },
-    ];
-  }
-
-  initializeCharts() {
-    // Line Chart for Organizations Performance
-    this.chartData = {
-      labels: ['Nov 30', 'Dec 1', 'Dec 2', 'Dec 3', 'Dec 4', 'Dec 5', 'Dec 6', 'Dec 7'],
-      datasets: [
-        {
-          label: 'Sales Value (Ksh)',
-          data: [450000, 1200000, 1100000, 950000, 1250000, 1150000, 850000, 650000],
-          fill: true,
-          borderColor: '#dc3545',
-          backgroundColor: 'rgba(220, 53, 69, 0.1)',
-          tension: 0.4,
-          borderWidth: 3,
-        },
-      ],
-    };
-
-    this.chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-        },
-        tooltip: {
-          mode: 'index',
-          intersect: false,
-        },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: function (value: any) {
-              return 'Ksh ' + value.toLocaleString();
-            },
-          },
-        },
-      },
-    };
-
-    // Pie Chart for Category Distribution
-    this.pieChartData = {
-      labels: ['SYSTEM', 'DRIVER', 'FUEL', 'MAINTENANCE'],
-      datasets: [
-        {
-          data: [306994, 6183923, 150000, 350000],
-          backgroundColor: ['#0d6efd', '#dc3545', '#ffc107', '#198754'],
-          borderWidth: 0,
-        },
-      ],
-    };
-
-    this.pieChartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'bottom',
-        },
-      },
-    };
-  }
-
-  initializeTransactions() {
-    // TODO: Replace with actual API call
-    this.recentTransactions = [
-      {
-        id: 'TXN001',
-        date: '2025-12-07',
-        vehicle: 'KAB 123X',
-        amount: 5500,
-        type: 'Payment',
-        status: 'Completed',
-      },
-      {
-        id: 'TXN002',
-        date: '2025-12-07',
-        vehicle: 'KBC 456Y',
-        amount: 4200,
-        type: 'Booking',
-        status: 'Pending',
-      },
-      {
-        id: 'TXN003',
-        date: '2025-12-06',
-        vehicle: 'KCD 789Z',
-        amount: 6800,
-        type: 'Payment',
-        status: 'Completed',
-      },
-    ];
+    });
   }
 
   setDateRange() {

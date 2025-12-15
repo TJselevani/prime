@@ -1,5 +1,10 @@
 <!-- pages/dashboard/dashboard.component.html -->
 <div class="dashboard-container">
+  <!-- Global Loading Overlay -->
+  <div class="dashboard-loader" *ngIf="loading()">
+    <p-progressSpinner style="width: 120px; height: 120px; color: #dc3545" />
+  </div>
+
   <!-- Header Section -->
   <div class="dashboard-header">
     <div class="header-content">
@@ -27,6 +32,8 @@
       ></button>
     </div>
   </div>
+
+  <!-- <div class="global-loader" *ngIf="loading()">Loading...</div> -->
 
   <!-- Stats Cards -->
   <div class="stats-grid">

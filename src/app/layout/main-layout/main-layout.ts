@@ -23,6 +23,8 @@ interface TabItem {
   styleUrls: ['./main-layout.css'],
 })
 export class MainLayoutComponent implements OnInit {
+  loading: any;
+
   // UI State
   sidebarCollapsed = false;
   currentRoute = '';
