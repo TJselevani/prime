@@ -1,26 +1,26 @@
 <!-- pages/dashboard/dashboard.component.html -->
 <div class="dashboard-container">
-  <!-- Global Loading Overlay -->
+  <!-- ================= GLOBAL LOADING OVERLAY ================= -->
   <div class="dashboard-loader" *ngIf="loading()">
-    <p-progressSpinner style="width: 120px; height: 120px; color: #dc3545" />
+    <p-progressSpinner style="width: 120px; height: 120px" strokeWidth="4" />
   </div>
 
-  <!-- Header Section -->
+  <!-- ================= HEADER ================= -->
   <div class="dashboard-header">
     <div class="header-content">
       <h1>Dashboard Overview</h1>
       <p class="text-muted">Welcome back! Here's what's happening with your fleet today.</p>
     </div>
+
     <div class="header-actions">
-      <!-- </p-calendar> -->
       <mat-form-field appearance="fill">
         <mat-label>Select Date Range</mat-label>
-        <mat-date-range-input [rangePicker]="picker" [separator]="' to '">
-          <input matStartDate placeholder="Start date" />
-          <input matEndDate placeholder="End date" />
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Start date" [(ngModel)]="dateRange[0]" />
+          <input matEndDate placeholder="End date" [(ngModel)]="dateRange[1]" />
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-date-range-picker #picker (closed)="onDateRangeChange()"></mat-date-range-picker>
       </mat-form-field>
 
       <button
@@ -33,9 +33,7 @@
     </div>
   </div>
 
-  <!-- <div class="global-loader" *ngIf="loading()">Loading...</div> -->
-
-  <!-- Stats Cards -->
+  <!-- ================= STATS CARDS ================= -->
   <div class="stats-grid">
     <p-card *ngFor="let card of statsCards" [styleClass]="'stat-card'">
       <div class="stat-content">
@@ -53,12 +51,18 @@
     </p-card>
   </div>
 
-  <!-- Charts Section -->
+  <!-- ================= CHARTS SECTION ================= -->
   <div class="charts-grid">
     <!-- Line Chart -->
     <p-card header="Organizations Performance" styleClass="chart-card">
       <div class="chart-container">
-        <p-chart type="line" [data]="chartData" [options]="chartOptions" height="300px"></p-chart>
+        <p-chart
+          *ngIf="chartData"
+          type="line"
+          [data]="chartData"
+          [options]="chartOptions"
+          height="300px"
+        ></p-chart>
       </div>
     </p-card>
 
@@ -66,38 +70,31 @@
     <p-card header="Total Amount Per Category" styleClass="chart-card">
       <div class="chart-container">
         <p-chart
+          *ngIf="pieChartData"
           type="pie"
           [data]="pieChartData"
           [options]="pieChartOptions"
           height="300px"
         ></p-chart>
       </div>
-      <div class="category-legend">
-        <div class="legend-item">
-          <span class="legend-dot" style="background: #0d6efd"></span>
-          <span class="legend-label">SYSTEM</span>
-          <span class="legend-value">Ksh 306,994.00</span>
-        </div>
-        <div class="legend-item">
-          <span class="legend-dot" style="background: #dc3545"></span>
-          <span class="legend-label">DRIVER</span>
-          <span class="legend-value">Ksh 6,183,923.00</span>
-        </div>
-        <div class="legend-item">
-          <span class="legend-dot" style="background: #ffc107"></span>
-          <span class="legend-label">FUEL</span>
-          <span class="legend-value">Ksh 150,000.00</span>
-        </div>
-        <div class="legend-item">
-          <span class="legend-dot" style="background: #198754"></span>
-          <span class="legend-label">MAINTENANCE</span>
-          <span class="legend-value">Ksh 350,000.00</span>
+
+      <!-- Dynamic Legend -->
+      <div class="category-legend" *ngIf="pieChartData">
+        <div class="legend-item" *ngFor="let label of pieChartData.labels; let i = index">
+          <span
+            class="legend-dot"
+            [style.background]="pieChartData.datasets[0].backgroundColor[i]"
+          ></span>
+          <span class="legend-label">{{ label }}</span>
+          <span class="legend-value">
+            Ksh {{ pieChartData.datasets[0].data[i] | number : '1.2-2' }}
+          </span>
         </div>
       </div>
     </p-card>
   </div>
 
-  <!-- Recent Transactions -->
+  <!-- ================= RECENT TRANSACTIONS ================= -->
   <p-card header="Recent Transactions" styleClass="transactions-card">
     <p-table [value]="recentTransactions" [rows]="5" [paginator]="true">
       <ng-template pTemplate="header">
@@ -111,6 +108,7 @@
           <th>Actions</th>
         </tr>
       </ng-template>
+
       <ng-template pTemplate="body" let-transaction>
         <tr>
           <td>{{ transaction.id }}</td>

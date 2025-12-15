@@ -1,4 +1,4 @@
-export interface DashboardStats {
+export interface DashboardStatsModel {
   totalAmountCollected: number;
   totalBookingAmount: number;
   totalDirectPayment: number;
@@ -11,17 +11,17 @@ export interface DashboardStats {
   };
 }
 
-export interface DashboardChart {
+export interface DashboardLineChartModel {
   labels: string[];
   data: number[];
 }
 
-export interface DashboardPie {
+export interface DashboardPieChartModel {
   labels: string[];
   data: number[];
 }
 
-export interface DashboardTransaction {
+export interface DashboardTransactionModel {
   id: string;
   date: string;
   vehicle: string;
@@ -30,9 +30,9 @@ export interface DashboardTransaction {
   status: 'Completed' | 'Pending' | 'Failed';
 }
 
-export interface DashboardData {
-  stats: DashboardStats;
-  lineChart: DashboardChart;
-  pieChart: DashboardPie;
-  recentTransactions: DashboardTransaction[];
+export interface DashboardDataModel {
+  stats: DashboardStatsModel;
+  lineChart: DashboardLineChartModel;
+  pieChart: DashboardPieChartModel;
+  recentTransactions: DashboardTransactionModel[];
 }

@@ -17,9 +17,3 @@ export class LoadingStore {
     this._loading.set(false);
   }
 }
-
-// @Injectable({ providedIn: 'root' })
-// export class LoadingStore {
-//   private readonly _loading = signal(false);
-
-// }
